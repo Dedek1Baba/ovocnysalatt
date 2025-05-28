@@ -1,104 +1,54 @@
-const People = require("../models/people");
+const Salad = require("../models/people");
 
-
-exports.getAllPeople = async (req, res, next)=>{
-    try{
-        const data = await People.find();
-        if(data && data.length !== 0){
+exports.getAllSalads = async (req, res) => {
+    try {
+        const data = await Salad.find();
+        if (data && data.length !== 0) {
             return res.status(200).send({
-                message : "people found!!!!!!",
+                message: "salads found",
                 payload: data,
             });
-        } 
-
-        res.status(404).send({
-             message: "people not found"
-        })
-        
-    } catch(err){
+        }
+        res.status(404).send({ message: "no salads found" });
+    } catch (err) {
         console.log(err);
         res.status(500).send(err);
     }
 };
-exports.getPersonById = async (req, res, next)=>{
-    try{
-        const data = await People.findById(req.params.id);
-        if(data){
+
+exports.getSaladById = async (req, res) => {
+    try {
+        const data = await Salad.findById(req.params.id);
+        if (data) {
             return res.status(200).send({
-                message : "person found!!!!!!",
+                message: "salad found",
                 payload: data,
             });
-        } 
-
-        res.status(404).send({
-             message: "person not found"
-        })
-        
-    } catch(err){
+        }
+        res.status(404).send({ message: "salad not found" });
+    } catch (err) {
         console.log(err);
         res.status(500).send(err);
     }
 };
-exports.createPerson = async (req, res, next)=>{
-    try{
-        const data = new People({
+
+exports.createSalad = async (req, res) => {
+    try {
+        const data = new Salad({
             name: req.body.name,
-            address: req.body.address,
-            age: req.body.age
+            fruit: req.body.fruit,
+            dressing: req.body.dressing,
+            topping: req.body.topping
         });
-        const result =await data.save();
-        if (result){
+        const result = await data.save();
+        if (result) {
             return res.status(201).send({
-                message: "person created",
+                message: "salad created",
                 payload: result
-            })
+            });
         }
-        res.status(404).send({
-            message: "person not created"
-       })
-       
-    } catch(err){
-        console.log(err);
-        res.status(500).send(err);
-    }
-};
-exports.updatePerson = async (req, res, next)=>{
-    try{
-        const data = {
-            name: req.body.name,
-            address: req.body.address,
-            age: req.body.age
-        };
-        const result =await People.findByIdAndUpdate(req.params.id, data);
-        if (result){
-            return res.status(201).send({
-                message: "person updated",
-                payload: result
-            })
-        }
-        res.status(404).send({
-            message: "person not updated"
-       })
-       
-    } catch(err){
-        console.log(err);
-        res.status(500).send(err);
-    }
-};
-exports.deletePerson = async (req, res, next)=>{
-    try{
-        const result =await People.findByIdAndDelete(req.params.id);
-        if (result){
-            return res.status(201).send({
-                message: "person deleted",
-                payload: result
-            })
-        }
-        res.status(404).send({
-            message: "person not deleted"
-       })
-       
-    } catch(err){
+        res.status(400).send({ message: "salad not created" });
+    } catch (err) {
         console.log(err);
         res.status(500).send(err);
     }

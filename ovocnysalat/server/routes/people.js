@@ -8,34 +8,20 @@ const peopleController = require('../controllers/people');
  * Method GET
  * URL: /people
 */
-router.get('/', peopleController.getAllPeople);
+router.get('/', peopleController.getAllSalads);
 
 /** 
  * Get one person by id
  * Method GET
  * URL: /people/:id
 */
-router.get('/:id', peopleController.getPersonById);
+router.get('/:id', peopleController.getSaladById);
 
 /** 
  * create peson
  * Method POST
  * URL: /people
 */
-router.post('/',peopleController.createPerson);
-
-/** 
- * Delete person
- * Method DELETE
- * URL: /people/:id
-*/
-router.delete('/:id', peopleController.createPerson);
-
-/** 
- * update person
- * Method put
- * URL: /people/:id
-*/
-router.put('/:id', peopleController.updatePerson);
+router.post('/',peopleController.createSalad);
 
 module.exports = router;

@@ -6,16 +6,13 @@ const cors = require("cors");
 var logger = require('morgan');
 const mongoose = require('mongoose');
 mongoose
-.connect(`mongodb+srv://admin:adminadmin@cluster0.lsavcmx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`)
+.connect(`mongodb+srv://admin:adminadmin@cluster0.89h2u.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`)
 .then(() => console.log("database connected"))
 .catch((err) => console.log(err));
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var peopleRouter = require('./routes/people');
-var programmersRouter = require('./routes/programmers');
-var boilersRouter = require('./routes/boilers');
-var furnituresRouter = require('./routes/furnitures');
 
 var app = express();
 app.use(cors());
@@ -32,10 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/people', peopleRouter);
-app.use('/programmers', programmersRouter);
-app.use('/boilers', boilersRouter);
-app.use('/furnitures', furnituresRouter);
+app.use('/salad', peopleRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
