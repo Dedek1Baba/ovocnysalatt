@@ -5,6 +5,8 @@ import CreateHuman from "./CreateHuman";
 import CreatedHuman from "./CreatedHuman";
 import PeopleList from "./PeopleList";
 import Human from "./Human";
+import AboutUs from "./AboutUs/aboutus";
+import Contact from "./Contact/conact"
 
 
 export default function AppRoutes() {
@@ -15,7 +17,9 @@ export default function AppRoutes() {
         <Route path="/create-salad" element={<CreateHuman />} />
         <Route path="/created-salad/:id" element={<CreatedHuman />} />
         <Route path="/salads" element={<PeopleList />}/>
-        <Route path="/Human/:id" element={<Human />}/>
+        <Route path="/Salad/:id" element={<Human />}/>
+        <Route path="/aboutus" element={<AboutUs />}/>
+        <Route path="/contact" element={<Contact />}/>
     </Routes>
     </BrowserRouter>
   )

@@ -24,4 +24,6 @@ router.get('/:id', peopleController.getSaladById);
 */
 router.post('/',peopleController.createSalad);
 
+router.delete("/:id", peopleController.deleteSalad);
+
 module.exports = router;

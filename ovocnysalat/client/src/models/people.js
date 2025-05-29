@@ -62,3 +62,24 @@ export const createSalad = async (saladData) => {
         throw error;
     }
 };
+
+export const deleteSalad = async (id) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/${id}`, {
+            method: "DELETE"
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: `Failed to delete salad with id ${id}` }));
+            throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+        }
+
+        return {
+            message: "Salad deleted successfully",
+            status: response.status
+        };
+    } catch (error) {
+        console.error(`Error in deleteSalad for id ${id}:`, error);
+        throw error;
+    }
+};

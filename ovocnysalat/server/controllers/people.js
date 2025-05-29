@@ -53,3 +53,19 @@ exports.createSalad = async (req, res) => {
         res.status(500).send(err);
     }
 };
+
+exports.deleteSalad = async (req, res) => {
+    try {
+        const deleted = await Salad.findByIdAndDelete(req.params.id);
+        if (!deleted) {
+            return res.status(404).send({ message: `salad with id ${req.params.id} not found` });
+        }
+        return res.status(200).send({
+            message: "salad deleted",
+            payload: deleted
+        });
+    } catch (err) {
+        console.log(`Error deleting salad with id ${req.params.id}:`, err);
+        res.status(500).send({ message: "failed to delete salad", error: err });
+    }
+};
