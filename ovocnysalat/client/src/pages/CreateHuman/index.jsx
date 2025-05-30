@@ -1,25 +1,57 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createSalad } from "../../models/people";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 
+// Ceník
+const prices = {
+  fruit: {
+    jahody: 40,
+    "banán": 35,
+    "ananas": 45,
+    "borůvky": 50,
+  },
+  dressing: {
+    med: 15,
+    jogurt: 10,
+    limetka: 12,
+  },
+  topping: {
+    "oříšky": 20,
+    "kokos": 18,
+    "čokoláda": 25,
+  },
+};
+
 export default function CreateSalad() {
   const [formData, setFormData] = useState({});
   const [feedback, setFeedback] = useState(null);
+  const [total, setTotal] = useState(0);
   const navigate = useNavigate();
 
+  // Při změně vstupu aktualizuj formulář i cenu
   const handleInput = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const newForm = { ...formData, [e.target.name]: e.target.value };
+    setFormData(newForm);
+    recalculateTotal(newForm);
+  };
+
+  const recalculateTotal = (data) => {
+    const fruitPrice = prices.fruit[data.fruit] || 0;
+    const dressingPrice = prices.dressing[data.dressing] || 0;
+    const toppingPrice = prices.topping[data.topping] || 0;
+    setTotal(fruitPrice + dressingPrice + toppingPrice);
   };
 
   const handleButton = async (e) => {
     e.preventDefault();
     setFeedback(null);
     try {
-      const data = await createSalad(formData);
+      const data = await createSalad({ ...formData, total });
       if (data.status === 201) {
         setFormData({});
+        setTotal(0);
         setFeedback({ type: "success", message: "Salát byl úspěšně vytvořen!" });
         setTimeout(() => {
           navigate(`/created-salad/${data.data._id}`);
@@ -79,10 +111,10 @@ export default function CreateSalad() {
                 required
               >
                 <option value="">-- vyber --</option>
-                <option value="jahody">Jahody</option>
-                <option value="banán">Banán</option>
-                <option value="ananas">Ananas</option>
-                <option value="borůvky">Borůvky</option>
+                <option value="jahody">Jahody (40 Kč)</option>
+                <option value="banán">Banán (35 Kč)</option>
+                <option value="ananas">Ananas (45 Kč)</option>
+                <option value="borůvky">Borůvky (50 Kč)</option>
               </select>
             </div>
 
@@ -99,9 +131,9 @@ export default function CreateSalad() {
                 required
               >
                 <option value="">-- vyber --</option>
-                <option value="med">Med</option>
-                <option value="jogurt">Jogurt</option>
-                <option value="limetka">Limetková šťáva</option>
+                <option value="med">Med (15 Kč)</option>
+                <option value="jogurt">Jogurt (10 Kč)</option>
+                <option value="limetka">Limetková šťáva (12 Kč)</option>
               </select>
             </div>
 
@@ -118,15 +150,19 @@ export default function CreateSalad() {
                 required
               >
                 <option value="">-- vyber --</option>
-                <option value="oříšky">Oříšky</option>
-                <option value="kokos">Strouhaný kokos</option>
-                <option value="čokoláda">Čokoládové vločky</option>
+                <option value="oříšky">Oříšky (20 Kč)</option>
+                <option value="kokos">Strouhaný kokos (18 Kč)</option>
+                <option value="čokoláda">Čokoládové vločky (25 Kč)</option>
               </select>
+            </div>
+
+            <div className="mt-1 text-right text-lg font-semibold text-green-700">
+              Celková cena: {total} Kč
             </div>
 
             <button
               type="submit"
-              className="mt-6 bg-green-700 text-white font-semibold rounded-md py-3 hover:bg-green-800 transition"
+              className="mt-1 bg-green-700 text-white font-semibold rounded-md py-3 hover:bg-green-800 transition"
             >
               Odeslat salát 🍴
             </button>

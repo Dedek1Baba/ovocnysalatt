@@ -105,7 +105,7 @@ export default function ContactForm() {
       </main>
 
       <Footer />
-      <Toaster position="top-right" />
+      <Toaster position="bottom-right" />
     </div>
   );
 }

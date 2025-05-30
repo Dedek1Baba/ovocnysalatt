@@ -24,7 +24,7 @@ export default function MainView() {
   };
 
   const handleDelete = async () => {
-    const confirm = window.confirm("Opravdu chcete tuto objednávku smazat?");
+    const confirm = window.confirm("Opravdu chcete tuto objednávku stornovat?");
     if (!confirm) return;
 
     try {
