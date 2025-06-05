@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import salatImage from "../../assets/salat.jpg";
-import { Sparkles, Heart, Smile } from "lucide-react";
+import { Sparkles, Heart, Smile, Star } from "lucide-react";
 
 export default function Home() {
   return (
@@ -10,7 +10,6 @@ export default function Home() {
       <Header />
 
       <main className="flex-grow px-6 py-16">
-        {/* Hlavní blok */}
         <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-xl flex flex-col md:flex-row overflow-hidden">
           <div className="md:w-1/2 p-10 flex flex-col justify-center animate-fade-in-up">
             <h1 className="text-5xl font-extrabold mb-6 tracking-tight text-green-800">
@@ -44,7 +43,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Výhody */}
         <section className="mt-20 max-w-5xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-green-800 mb-6">Proč si u nás míchat salát?</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-8 text-green-800">
@@ -63,6 +61,46 @@ export default function Home() {
               <h3 className="font-semibold text-lg">Spokojenost zaručena</h3>
               <p className="text-sm mt-1 text-gray-600">Rychlá, zábavná a chutná služba pro všechny.</p>
             </div>
+          </div>
+        </section>
+
+        <section className="mt-20 max-w-5xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold text-green-800 mb-8">Co říkají naši zákazníci?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {[
+              {
+                name: "Anna K.",
+                text: "Salát byl opravdu čerstvý a výborně chutnal! Rychlé dodání a skvělá komunikace.",
+                stars: 5,
+              },
+              {
+                name: "Petr M.",
+                text: "Skvělý výběr surovin a možnost si salát namixovat podle sebe. Určitě objednám znovu!",
+                stars: 4,
+              },
+              {
+                name: "Lucie R.",
+                text: "Milá obsluha a rychlá příprava. Doporučuji všem, kdo chtějí zdravě a chutně jíst.",
+                stars: 5,
+              },
+            ].map(({ name, text, stars }, i) => (
+              <div
+                key={i}
+                className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-green-900"
+              >
+                <div className="flex mb-3">
+                  {[...Array(5)].map((_, idx) =>
+                    idx < stars ? (
+                      <Star key={idx} size={24} className="text-yellow-400" />
+                    ) : (
+                      <Star key={idx} size={24} className="text-gray-300" />
+                    )
+                  )}
+                </div>
+                <p className="italic mb-4 text-gray-700">"{text}"</p>
+                <h4 className="font-semibold">{name}</h4>
+              </div>
+            ))}
           </div>
         </section>
       </main>

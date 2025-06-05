@@ -4,7 +4,6 @@ import { createSalad } from "../../models/people";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 
-// Ceník
 const prices = {
   fruit: {
     jahody: 40,
@@ -30,7 +29,6 @@ export default function CreateSalad() {
   const [total, setTotal] = useState(0);
   const navigate = useNavigate();
 
-  // Při změně vstupu aktualizuj formulář i cenu
   const handleInput = (e) => {
     const newForm = { ...formData, [e.target.name]: e.target.value };
     setFormData(newForm);
