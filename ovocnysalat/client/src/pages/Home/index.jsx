@@ -2,9 +2,37 @@ import { Link } from "react-router-dom";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import salatImage from "../../assets/salat.jpg";
+import salat1 from "../../assets/banan.jpg";
+import salat2 from "../../assets/jablko.jpg";
+import salat3 from "../../assets/hrozno.jpg";
 import { Sparkles, Heart, Smile, Star } from "lucide-react";
 
 export default function Home() {
+ const salads = [
+  {
+    image: salat1,
+    title: "Banán z Ekvádoru",
+    description:
+      "Dovezený přímo z tropických plantáží – banán, který ti zvedne náladu i v nejzamračenější den.",
+    imageRight: false,
+  },
+  {
+    image: salat2,
+    title: "Jablko z moravského sadu",
+    description:
+      "Křupavé a šťavnaté jablko, které ti připomene babiččinu zahradu a pohodu venkovského rána.",
+    imageRight: true,
+  },
+  {
+    image: salat3,
+    title: "Hrozno z jižní Francie",
+    description:
+      "Sladké hrozny s vůní slunce, které tě na chvíli přenesou do vinic Provence – ideální pauza v hektickém dni.",
+    imageRight: false,
+  },
+];
+
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-green-100 via-white to-green-50 text-green-900">
       <Header />
@@ -42,7 +70,6 @@ export default function Home() {
             />
           </div>
         </div>
-
         <section className="mt-20 max-w-5xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-green-800 mb-6">Proč si u nás míchat salát?</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-8 text-green-800">
@@ -63,7 +90,37 @@ export default function Home() {
             </div>
           </div>
         </section>
-
+        <section className="mt-20 max-w-5xl mx-auto">
+          <h2 className="text-3xl font-bold text-green-800 mb-10 text-center">Naše nejlepší suroviny</h2>
+          <div className="flex flex-col gap-12">
+            {salads.map(({ image, title, description, imageRight }, i) => (
+              <div
+                key={i}
+                className={`flex flex-col md:flex-row ${
+                  imageRight ? "md:flex-row-reverse" : ""
+                } items-center bg-white rounded-xl shadow-lg overflow-hidden`}
+              >
+                <img
+                  src={image}
+                  alt={title}
+                  className="w-full md:w-1/2 h-64 object-cover"
+                  loading="lazy"
+                />
+                <div className="p-6 md:w-1/2">
+                  <h3 className="text-2xl font-semibold mb-4 text-green-800">{title}</h3>
+                  <p className="text-green-900">{description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-10">
+            <Link to="/create-salad">
+              <button className="bg-green-700 hover:bg-green-800 text-white font-semibold py-3 px-8 rounded-md transition">
+                Vytvoř si vlastní salát 🥗
+              </button>
+            </Link>
+          </div>
+        </section>
         <section className="mt-20 max-w-5xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-green-800 mb-8">Co říkají naši zákazníci?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
