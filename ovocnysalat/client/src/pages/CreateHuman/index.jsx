@@ -13,6 +13,7 @@ const prices = {
     jahody: 40,
     broskve: 45,
     banány: 35,
+    nic: 0
   },
   dressing: {
     jogurt: 10,
@@ -147,6 +148,7 @@ export default function CreateSalad() {
                 required
               >
                 <option value="">-- vyber --</option>
+                <option value="">nic</option>
                 <option value="jogurt">Jogurt (10 Kč)</option>
                 <option value="agávový sirup">Agávový sirup (12 Kč)</option>
               </select>
@@ -163,6 +165,8 @@ export default function CreateSalad() {
                 required
               >
                 <option value="">-- vyber --</option>
+                                <option value="">nic</option>
+
                 <option value="kokosové kousky">Kokosové kousky (18 Kč)</option>
               </select>
             </div>
