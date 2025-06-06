@@ -6,6 +6,7 @@ import Footer from "../../components/footer";
 
 const prices = {
   fruit: {
+    nic: 0,
     třešně: 35,
     jablka: 30,
     kiwi: 38,
@@ -15,10 +16,12 @@ const prices = {
     banány: 35,
   },
   dressing: {
+    nic: 0,
     jogurt: 10,
     "agávový sirup": 12,
   },
   topping: {
+    nic: 0,
     "kokosové kousky": 18,
   },
 };
@@ -48,12 +51,14 @@ export default function CreateSalad() {
     e.preventDefault();
     setFeedback(null);
     try {
-      const fruitCombo = [formData.fruit1, formData.fruit2, formData.fruit3].filter(Boolean).join(", ");
+      const fruitCombo = [formData.fruit1, formData.fruit2, formData.fruit3]
+        .filter((f) => f && f !== "nic")
+        .join(", ");
       const data = await createSalad({
         name: formData.name,
-        fruit: fruitCombo,
-        dressing: formData.dressing,
-        topping: formData.topping,
+        fruit: fruitCombo || "nic",
+        dressing: formData.dressing || "nic",
+        topping: formData.topping || "nic",
         total,
       });
 
@@ -71,6 +76,7 @@ export default function CreateSalad() {
   };
 
   const fruitOptions = [
+    "nic",
     "třešně",
     "jablka",
     "kiwi",
@@ -79,6 +85,9 @@ export default function CreateSalad() {
     "broskve",
     "banány",
   ];
+
+  const dressingOptions = ["nic", "jogurt", "agávový sirup"];
+  const toppingOptions = ["nic", "kokosové kousky"];
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-900">
@@ -124,12 +133,12 @@ export default function CreateSalad() {
                   value={formData[`fruit${num}`] || ""}
                   onChange={handleInput}
                   className="w-full border border-gray-300 rounded-md px-4 py-3"
-                  required
                 >
                   <option value="">-- vyber --</option>
                   {fruitOptions.map((fruit) => (
                     <option key={fruit} value={fruit}>
-                      {fruit.charAt(0).toUpperCase() + fruit.slice(1)} ({prices.fruit[fruit]} Kč)
+                      {fruit.charAt(0).toUpperCase() + fruit.slice(1)}{" "}
+                      {fruit !== "nic" ? `(${prices.fruit[fruit]} Kč)` : "(nic)"}
                     </option>
                   ))}
                 </select>
@@ -144,11 +153,14 @@ export default function CreateSalad() {
                 value={formData.dressing || ""}
                 onChange={handleInput}
                 className="w-full border border-gray-300 rounded-md px-4 py-3"
-                required
               >
                 <option value="">-- vyber --</option>
-                <option value="jogurt">Jogurt (10 Kč)</option>
-                <option value="agávový sirup">Agávový sirup (12 Kč)</option>
+                {dressingOptions.map((d) => (
+                  <option key={d} value={d}>
+                    {d.charAt(0).toUpperCase() + d.slice(1)}{" "}
+                    {d !== "nic" ? `(${prices.dressing[d]} Kč)` : "(nic)"}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -160,10 +172,14 @@ export default function CreateSalad() {
                 value={formData.topping || ""}
                 onChange={handleInput}
                 className="w-full border border-gray-300 rounded-md px-4 py-3"
-                required
               >
                 <option value="">-- vyber --</option>
-                <option value="kokosové kousky">Kokosové kousky (18 Kč)</option>
+                {toppingOptions.map((t) => (
+                  <option key={t} value={t}>
+                    {t.charAt(0).toUpperCase() + t.slice(1)}{" "}
+                    {t !== "nic" ? `(${prices.topping[t]} Kč)` : "(nic)"}
+                  </option>
+                ))}
               </select>
             </div>
 
