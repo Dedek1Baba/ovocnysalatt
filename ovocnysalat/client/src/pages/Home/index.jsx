@@ -4,7 +4,6 @@ import Footer from "../../components/footer";
 import salatImage from "../../assets/salat.jpg";
 import salat1 from "../../assets/banan.jpg";
 import salat2 from "../../assets/jablko.jpg";
-import salat3 from "../../assets/hrozno.jpg";
 import { Sparkles, Heart, Smile, Star } from "lucide-react";
 
 export default function Home() {
@@ -23,13 +22,7 @@ export default function Home() {
       "Křupavé a šťavnaté jablko, které ti připomene babiččinu zahradu a pohodu venkovského rána.",
     imageRight: true,
   },
-  {
-    image: salat3,
-    title: "Hrozno z jižní Francie",
-    description:
-      "Sladké hrozny s vůní slunce, které tě na chvíli přenesou do vinic Provence – ideální pauza v hektickém dni.",
-    imageRight: false,
-  },
+  
 ];
 
 
