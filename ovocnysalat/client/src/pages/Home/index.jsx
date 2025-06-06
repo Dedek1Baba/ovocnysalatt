@@ -53,11 +53,7 @@ export default function Home() {
                   Vytvoř si salát 🥗
                 </button>
               </Link>
-              <Link to="/salads">
-                <button className="border-2 border-green-700 text-green-700 hover:bg-green-100 font-semibold py-3 px-8 rounded-md transition">
-                  Objednávky 📋
-                </button>
-              </Link>
+             
             </div>
           </div>
 

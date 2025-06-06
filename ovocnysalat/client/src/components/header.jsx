@@ -28,12 +28,7 @@ export default function Header() {
         >
           Kontakt
         </Link>
-         <Link
-          to="/salads"
-          className="btn btn-sm btn-outline border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-green-900 transition"
-        >
-          Objednávky
-        </Link>
+        
       </nav>
     </header>
   );

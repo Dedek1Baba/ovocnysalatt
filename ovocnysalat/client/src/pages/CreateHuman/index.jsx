@@ -1,25 +1,25 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { createSalad } from "../../models/people";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 
 const prices = {
   fruit: {
+    třešně: 35,
+    jablka: 30,
+    kiwi: 38,
+    borůvky: 50,
     jahody: 40,
-    "banán": 35,
-    "ananas": 45,
-    "borůvky": 50,
+    broskve: 45,
+    banány: 35,
   },
   dressing: {
-    med: 15,
     jogurt: 10,
-    limetka: 12,
+    "agávový sirup": 12,
   },
   topping: {
-    "oříšky": 20,
-    "kokos": 18,
-    "čokoláda": 25,
+    "kokosové kousky": 18,
   },
 };
 
@@ -36,36 +36,53 @@ export default function CreateSalad() {
   };
 
   const recalculateTotal = (data) => {
-    const fruitPrice = prices.fruit[data.fruit] || 0;
+    const f1 = prices.fruit[data.fruit1] || 0;
+    const f2 = prices.fruit[data.fruit2] || 0;
+    const f3 = prices.fruit[data.fruit3] || 0;
     const dressingPrice = prices.dressing[data.dressing] || 0;
     const toppingPrice = prices.topping[data.topping] || 0;
-    setTotal(fruitPrice + dressingPrice + toppingPrice);
+    setTotal(f1 + f2 + f3 + dressingPrice + toppingPrice);
   };
 
   const handleButton = async (e) => {
     e.preventDefault();
     setFeedback(null);
     try {
-      const data = await createSalad({ ...formData, total });
+      const fruitCombo = [formData.fruit1, formData.fruit2, formData.fruit3].filter(Boolean).join(", ");
+      const data = await createSalad({
+        name: formData.name,
+        fruit: fruitCombo,
+        dressing: formData.dressing,
+        topping: formData.topping,
+        total,
+      });
+
       if (data.status === 201) {
         setFormData({});
         setTotal(0);
         setFeedback({ type: "success", message: "Salát byl úspěšně vytvořen!" });
-        setTimeout(() => {
-          navigate(`/created-salad/${data.data._id}`);
-        }, 1500);
+        setTimeout(() => navigate(`/created-salad/${data.data._id}`), 1500);
       } else {
         setFeedback({ type: "error", message: "Něco se pokazilo. Zkus to znovu." });
       }
-    } catch (error) {
+    } catch {
       setFeedback({ type: "error", message: "Chyba připojení k serveru." });
     }
   };
 
+  const fruitOptions = [
+    "třešně",
+    "jablka",
+    "kiwi",
+    "borůvky",
+    "jahody",
+    "broskve",
+    "banány",
+  ];
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-900">
       <Header />
-
       <main className="flex-grow flex flex-col items-center py-12 px-4">
         <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
           <h1 className="text-3xl font-extrabold text-green-800 mb-8 text-center tracking-wide">
@@ -92,82 +109,77 @@ export default function CreateSalad() {
               placeholder="Tvé jméno"
               value={formData.name || ""}
               onChange={handleInput}
-              className="border border-gray-300 rounded-md px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+              className="border border-gray-300 rounded-md px-4 py-3"
               required
             />
 
-            <div>
-              <label htmlFor="fruit" className="block font-semibold mb-1 text-gray-700">
-                1. Vyber ovoce
-              </label>
-              <select
-                id="fruit"
-                name="fruit"
-                value={formData.fruit || ""}
-                onChange={handleInput}
-                className="w-full border border-gray-300 rounded-md px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
-                required
-              >
-                <option value="">-- vyber --</option>
-                <option value="jahody">Jahody (40 Kč)</option>
-                <option value="banán">Banán (35 Kč)</option>
-                <option value="ananas">Ananas (45 Kč)</option>
-                <option value="borůvky">Borůvky (50 Kč)</option>
-              </select>
-            </div>
+            {[1, 2, 3].map((num) => (
+              <div key={num}>
+                <label htmlFor={`fruit${num}`} className="block font-semibold mb-1">
+                  {num}. Vyber ovoce
+                </label>
+                <select
+                  id={`fruit${num}`}
+                  name={`fruit${num}`}
+                  value={formData[`fruit${num}`] || ""}
+                  onChange={handleInput}
+                  className="w-full border border-gray-300 rounded-md px-4 py-3"
+                  required
+                >
+                  <option value="">-- vyber --</option>
+                  {fruitOptions.map((fruit) => (
+                    <option key={fruit} value={fruit}>
+                      {fruit.charAt(0).toUpperCase() + fruit.slice(1)} ({prices.fruit[fruit]} Kč)
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ))}
 
             <div>
-              <label htmlFor="dressing" className="block font-semibold mb-1 text-gray-700">
-                2. Dresink
-              </label>
+              <label htmlFor="dressing" className="block font-semibold mb-1">Dresink</label>
               <select
                 id="dressing"
                 name="dressing"
                 value={formData.dressing || ""}
                 onChange={handleInput}
-                className="w-full border border-gray-300 rounded-md px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                className="w-full border border-gray-300 rounded-md px-4 py-3"
                 required
               >
                 <option value="">-- vyber --</option>
-                <option value="med">Med (15 Kč)</option>
                 <option value="jogurt">Jogurt (10 Kč)</option>
-                <option value="limetka">Limetková šťáva (12 Kč)</option>
+                <option value="agávový sirup">Agávový sirup (12 Kč)</option>
               </select>
             </div>
 
             <div>
-              <label htmlFor="topping" className="block font-semibold mb-1 text-gray-700">
-                3. Přílohy
-              </label>
+              <label htmlFor="topping" className="block font-semibold mb-1">Přílohy</label>
               <select
                 id="topping"
                 name="topping"
                 value={formData.topping || ""}
                 onChange={handleInput}
-                className="w-full border border-gray-300 rounded-md px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                className="w-full border border-gray-300 rounded-md px-4 py-3"
                 required
               >
                 <option value="">-- vyber --</option>
-                <option value="oříšky">Oříšky (20 Kč)</option>
-                <option value="kokos">Strouhaný kokos (18 Kč)</option>
-                <option value="čokoláda">Čokoládové vločky (25 Kč)</option>
+                <option value="kokosové kousky">Kokosové kousky (18 Kč)</option>
               </select>
             </div>
 
-            <div className="mt-1 text-right text-lg font-semibold text-green-700">
+            <div className="text-right text-lg font-semibold text-green-700">
               Celková cena: {total} Kč
             </div>
 
             <button
               type="submit"
-              className="mt-1 bg-green-700 text-white font-semibold rounded-md py-3 hover:bg-green-800 transition"
+              className="bg-green-700 text-white font-semibold rounded-md py-3 hover:bg-green-800 transition"
             >
               Odeslat salát 🍴
             </button>
           </form>
         </div>
       </main>
-
       <Footer />
     </div>
   );
